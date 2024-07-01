@@ -16,6 +16,18 @@ public class GameObject {
         img = _img;
     }
 
+    public void setSize(int _width, int _height)
+    {
+        width = _width ;
+        height = _height;
+    }
+
+    public void setPosition(int _x, int _y)
+    {
+        x = _x;
+        y = _y;
+    }
+
     GameObject(Image _img)
     {
         img = _img;

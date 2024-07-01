@@ -27,23 +27,9 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     int pipeWidth = 64;     //scaled by 1/6
     int pipeHeight = 512;
 
-    class Bird extends GameObject{
-        Bird(int _x, int _y, int _width, int _height, Image _img) {
-            super(_x, _y, _width, _height, _img);
-        }
-    }
     Bird bird;
 
-    class Pipe extends GameObject{
-        boolean passed = false;
-
-        Pipe(Image _img) {
-            super(pipeX, pipeY, pipeWidth, pipeHeight, _img);
-        }
-    }
-
     //game logic
-
     int velocityX = -4; //move pipes to the left speed(相对参考系)
     int velocityY = 0;
     int gravity= 1;
@@ -86,6 +72,40 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     }
 
+    // region #Implement
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        move();
+        repaint();
+        if(gameOver){
+            placePipesTimer.stop();
+            gameLoop.stop();
+        }
+    }
+
+
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+            velocityY = -9;}
+        if(gameOver){
+            RestartGame();
+        }
+    }
+
+
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
+    //endregion
+
+
+    // region #Function
+
     public void placePipes(){
         // (0-1) * pipeHeight /2 -> (0-256)
         //128
@@ -110,8 +130,6 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
     }
 
     public void draw(Graphics g){
-//        if(++i%60==0)
-//        System.out.println(j++);
         //background
         g.drawImage(backgroundImg,0,0,boardWidth,boardHeight,null);
 
@@ -171,7 +189,7 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
                 a.y < b.y +b.height &&
                 a.y + a.height > b.y ;
     }
-    // region #Function
+
     private void RestartGame() {
         //restart the game ,resetting the scene
         bird.y = birdY;
@@ -189,34 +207,5 @@ public class FlappyBird extends JPanel implements ActionListener, KeyListener {
 
     //endregion
 
-    // region #Implement
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        move();
-        repaint();
-        if(gameOver){
-            placePipesTimer.stop();
-            gameLoop.stop();
-        }
-    }
 
-
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE){
-            velocityY = -9;}
-            if(gameOver){
-                RestartGame();
-            }
-    }
-
-
-
-    @Override
-    public void keyTyped(KeyEvent e) {}
-
-    @Override
-    public void keyReleased(KeyEvent e) {}
-    //endregion
 }
